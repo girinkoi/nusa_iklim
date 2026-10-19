@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@yield('title', 'Nusa Iklim Dashboard')</title>
+    <!-- CSRF Token for future API calls -->
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <!-- Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Bootstrap Icons untuk logo/ikon menu -->
@@ -14,8 +16,9 @@
         }
         /* Styling Sidebar dengan Background Gradient */
         #sidebar {
-            min-height: 100vh;
-            width: 220px;
+            height: 100vh;
+            max-height: 100vh;
+            width: 240px;
             position: fixed;
             top: 0;
             left: 0;
@@ -25,10 +28,30 @@
             box-shadow: 4px 0 15px rgba(0, 0, 0, 0.1);
             display: flex;
             flex-direction: column;
-            justify-content: space-between; /* Membuat bagian akun terdorong ke bawah */
+            justify-content: space-between;
+            overflow: hidden;
+            z-index: 1030;
         }
         #sidebar .sidebar-top {
-            flex-grow: 1;
+            flex: 1 1 auto;
+            min-height: 0;
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
+        #sidebar .sidebar-top::-webkit-scrollbar {
+            width: 4px;
+        }
+        #sidebar .sidebar-top::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 4px;
+        }
+        #sidebar .sidebar-bottom {
+            flex-shrink: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            margin-top: auto;
+            width: 100%;
         }
         #sidebar .sidebar-header {
             padding: 20px 15px;
@@ -62,6 +85,7 @@
         
         /* Styling Dummy Account di Bawah Sidebar */
         .sidebar-footer {
+            flex-shrink: 0;
             padding: 15px;
             background: rgba(0, 0, 0, 0.15);
             border-top: 1px solid rgba(255, 255, 255, 0.1);
@@ -103,10 +127,10 @@
             text-overflow: ellipsis;
         }
 
-        /* Styling Konten Utama menyesuaikan lebar sidebar (220px) */
+        /* Styling Konten Utama menyesuaikan lebar sidebar (240px) */
         #content {
-            margin-left: 220px;
-            width: calc(100% - 220px);
+            margin-left: 240px;
+            width: calc(100% - 240px);
             padding: 30px;
             min-height: 100vh;
             background-color: #f8f9fa;
@@ -122,29 +146,35 @@
                 <i class="bi bi-cloud-sun-fill fs-4"></i> Nusa Iklim
             </div>
             <ul class="list-unstyled components">
-                <li>
-                    <a href="/"><i class="bi bi-house-door"></i> Dashboard</a>
+                <li class="{{ request()->routeIs('dashboard') ? 'active' : '' }}">
+                    <a href="{{ route('dashboard') }}"><i class="bi bi-house-door"></i> Dashboard</a>
                 </li>
-                <li>
-                    <a href="#"><i class="bi bi-map"></i> Peta Dan Rute</a>
+                <li class="{{ request()->routeIs('peta*') ? 'active' : '' }}">
+                    <a href="{{ route('peta') }}"><i class="bi bi-map"></i> Peta Dan Rute</a>
                 </li>
-                <li>
-                    <a href="#"><i class="bi bi-graph-up-arrow"></i> Prakiraan</a>
+                <li class="{{ request()->routeIs('prakiraan*') ? 'active' : '' }}">
+                    <a href="{{ route('prakiraan') }}"><i class="bi bi-graph-up-arrow"></i> Prakiraan</a>
                 </li>
-                <li>
-                    <a href="#"><i class="bi bi-file-earmark-text"></i> Laporan</a>
+                <li class="{{ request()->routeIs('laporan*') ? 'active' : '' }}">
+                    <a href="{{ route('laporan') }}"><i class="bi bi-file-earmark-text"></i> Laporan</a>
                 </li>
             </ul>
         </div>
 
-        <!-- DUMMY ACCOUNT (Paling Bawah) -->
-        <div class="sidebar-footer">
-            <div class="avatar">
-                MH
-            </div>
-            <div class="user-info">
-                <p class="user-name">muhammad hijri</p>
-                <p class="user-location">bekasi, Indonesia</p>
+        <!-- Bagian Bawah: Terkunci kokoh di dasar sidebar (Mencegah Layout Shift) -->
+        <div class="sidebar-bottom">
+            <!-- DUMMY AI CHAT COMPONENT (Tepat di atas User Profile Footer) -->
+            @include('partials.sidebar-ai-chat')
+
+            <!-- DUMMY ACCOUNT (Paling Bawah) -->
+            <div class="sidebar-footer">
+                <div class="avatar">
+                    MH
+                </div>
+                <div class="user-info">
+                    <p class="user-name">muhammad hijri</p>
+                    <p class="user-location">bekasi, Indonesia</p>
+                </div>
             </div>
         </div>
     </nav>
