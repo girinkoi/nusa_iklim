@@ -10,20 +10,22 @@
         body {
             overflow-x: hidden;
         }
-        /* Styling Sidebar */
+        /* Styling Sidebar dengan Background Gradient */
         #sidebar {
             min-height: 100vh;
             width: 260px;
             position: fixed;
             top: 0;
             left: 0;
-            background-color: #212529;
+            /* Efek gradasi warna biru dari atas ke bawah */
+            background: linear-gradient(180deg, #1b4d8e 0%, #3a7bd5 50%, #4facfe 100%);
             color: #fff;
             transition: all 0.3s;
+            box-shadow: 4px 0 15px rgba(0, 0, 0, 0.1);
         }
         #sidebar .sidebar-header {
             padding: 20px;
-            background: #1a1d20;
+            background: rgba(0, 0, 0, 0.1); /* Sedikit transparan agar menyatu dengan gradient */
             font-size: 1.25rem;
             font-weight: bold;
         }
@@ -34,18 +36,20 @@
             padding: 10px 20px;
             font-size: 1.1rem;
             display: block;
-            color: #adb5bd;
+            color: rgba(255, 255, 255, 0.8);
             text-decoration: none;
             transition: 0.2s;
         }
         #sidebar ul li a:hover, #sidebar ul li.active a {
             color: #fff;
-            background: #343a40;
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 8px;
+            margin: 0 10px;
         }
-        /* Styling Konten Utama supaya geser ke kanan menyesuaikan sidebar */
+        /* Styling Konten Utama */
         #content {
             margin-left: 260px;
-            width: calc(100% - 260px);
+            width: calc(100% - 260px); /* Diperbaiki tanda minusnya */
             padding: 30px;
             min-height: 100vh;
             background-color: #f8f9fa;
@@ -64,7 +68,7 @@
                 <a href="/">Dashboard</a>
             </li>
             <li>
-                <a href="#">Peta Dan Rute </a>
+                <a href="#">Peta Dan Rute</a>
             </li>
             <li>
                 <a href="#">Prakiraan</a>
